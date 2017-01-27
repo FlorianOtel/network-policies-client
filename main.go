@@ -25,11 +25,14 @@ func main() {
 
 	fmt.Printf("===> YAML format for Policy Element 'Allow All':\n%s\n", string(aapemyml))
 
-	np := netpolicy.NetworkPolicy{}
+	np, err := netpolicy.NewPolicy("My Policy Name", "Ingress", "MyOrg", "MyDomain", 999999)
 
-	if err := np.New("My Policy Name", "Ingress", "MyOrg", "MyDomain", 1000, &netpolicy.AllowAllPolicyElem); err != nil {
+	if err != nil {
 		log.Fatalf("KABOOM:", err)
 	}
+
+	// Add PEs (Policy Elements) to a Policy
+	np.AddPE(netpolicy.AllowAllPolicyElem, netpolicy.DenyAllPolicyElem)
 
 	npyml, err := yaml.Marshal(&np)
 
