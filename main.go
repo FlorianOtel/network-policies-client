@@ -29,17 +29,21 @@ func main() {
 
 	if err != nil {
 		log.Fatalf("KABOOM:", err)
+
 	}
 
 	// Add PEs (Policy Elements) to a Policy
 	np.AddPE(netpolicy.AllowAllPolicyElem, netpolicy.DenyAllPolicyElem)
 
-	npyml, err := yaml.Marshal(&np)
+	fmt.Printf("===> YAML format for Network Policy:\n%s\n", np)
 
-	if err != nil {
-		log.Fatalf("YAML Marshalling error: %v", err)
+	// Read from file
+
+	if npr, err := netpolicy.ReadPolicy("/mnt/gw-disk/Go/src/github.com/FlorianOtel/network-policies/samples/deny-all-policy.yaml"); err != nil {
+		log.Fatalf("KABOOM reading policy from file", err)
+
+	} else {
+		fmt.Printf("======> Policy read from file <======\n%s", npr)
 	}
-
-	fmt.Printf("===> YAML format for Network Policy:\n%s\n", string(npyml))
 
 }
